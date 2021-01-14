@@ -23,9 +23,14 @@ namespace SweeftDigital.Shop.Core.ValueObjects
 
         public static Money Zero => new Money(Currency.Default, 0);
 
-		#region Operators
+        public override string ToString()
+        {
+            return $"{Quantity} {Currency.Symbol}";
+        }
 
-		public static Money operator +(Money left, Money right)
+        #region Operators
+
+        public static Money operator +(Money left, Money right)
 		{
 			if (left.Currency != right.Currency)
 			{

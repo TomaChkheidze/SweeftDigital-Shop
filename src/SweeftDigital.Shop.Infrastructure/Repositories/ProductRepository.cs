@@ -1,6 +1,7 @@
 ﻿using SweeftDigital.Shop.Application.Interfaces;
 using SweeftDigital.Shop.Application.Models;
 using SweeftDigital.Shop.Core.Entities;
+using SweeftDigital.Shop.Infrastructure.Persistence;
 using System;
 using System.Collections.Generic;
 using System.Threading;
@@ -10,6 +11,13 @@ namespace SweeftDigital.Shop.Infrastructure.Repositories
 {
     public class ProductRepository : IProductRepository
     {
+        private readonly ApplicationDbContext _context;
+
+        public ProductRepository(ApplicationDbContext context)
+        {
+            _context = context;
+        }
+
         public Task Create(Product item)
         {
             throw new NotImplementedException();
@@ -20,9 +28,9 @@ namespace SweeftDigital.Shop.Infrastructure.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<Product> Get(int id, CancellationToken? cancellationToken)
+        public async Task<Product> Get(int id, CancellationToken? cancellationToken)
         {
-            throw new NotImplementedException();
+            return await _context.Products.FindAsync(id);
         }
 
         public Task<IEnumerable<Product>> GetAll(CancellationToken? cancellationToken)
@@ -30,9 +38,9 @@ namespace SweeftDigital.Shop.Infrastructure.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<PaginatedList<Product>> GetPaginated(int pageIndex, int pageSize, CancellationToken cancelationToken)
+        public async Task<PaginatedList<Product>> GetPaginated(int pageIndex, int pageSize, CancellationToken cancelationToken)
         {
-            throw new NotImplementedException();
+            return await PaginatedList<Product>.CreateAsync(_context.Products.AsQueryable(), pageIndex, pageSize, cancelationToken);
         }
 
         public Task Update(Product item)

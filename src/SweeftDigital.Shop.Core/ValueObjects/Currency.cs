@@ -13,6 +13,24 @@ namespace SweeftDigital.Shop.Core.ValueObjects
             Code = code;
         }
 
+        public Currency(string code)
+        {
+            switch (code)
+            {
+                case "USD":
+                    Symbol = "$";
+                    Code = code;
+                    break;
+                case "GEL":
+                    Symbol = "₾";
+                    Code = code;
+                    break;
+                default:
+                    Code = code;
+                    break;
+            }
+        }
+
         protected override IEnumerable<object> GetEqualityComponents()
         {
             yield return Symbol;

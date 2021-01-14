@@ -1,11 +1,6 @@
-﻿using SweeftDigital.Shop.Application.Models;
-using SweeftDigital.Shop.Core.Entities;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using SweeftDigital.Shop.Core.Entities;
 
 namespace SweeftDigital.Shop.Application.Interfaces
 {
-    public interface IProductRepository : IBaseRepository<Product>
-    {
-    }
+    public interface IProductRepository : IBaseRepository<Product> { }
 }

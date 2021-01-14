@@ -1,13 +1,16 @@
-﻿using Microsoft.AspNetCore.Authentication;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
 using SweeftDigital.Shop.Application.Interfaces;
+using SweeftDigital.Shop.Application.Models;
 using SweeftDigital.Shop.Infrastructure.Identity;
 using SweeftDigital.Shop.Infrastructure.Persistence;
 using SweeftDigital.Shop.Infrastructure.Repositories;
 using SweeftDigital.Shop.Infrastructure.Services;
+using System.Text;
 
 namespace SweeftDigital.Shop.Infrastructure
 {
@@ -20,25 +23,42 @@ namespace SweeftDigital.Shop.Infrastructure
                     configuration.GetConnectionString("DefaultConnection"),
                     b => b.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
 
-            services.AddScoped<IApplicationDbContext>(provider => provider.GetService<ApplicationDbContext>());
+            services.AddDbContext<UserDbContext>(options =>
+                options.UseSqlServer(
+                    configuration.GetConnectionString("IdentityConnection"),
+                    b => b.MigrationsAssembly(typeof(UserDbContext).Assembly.FullName)));
 
             services
-                .AddDefaultIdentity<ApplicationUser>()
+                .AddDefaultIdentity<ApplicationUser>(options=>
+                {
+                    options.Password.RequireDigit = false;
+                    options.Password.RequiredLength = 4;
+                    options.Password.RequireUppercase = false;
+                    options.Password.RequireLowercase = false;
+                    options.Password.RequireNonAlphanumeric = false;
+                })
                 .AddRoles<IdentityRole>()
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+                .AddEntityFrameworkStores<UserDbContext>();
 
-            services.AddIdentityServer()
-                .AddApiAuthorization<ApplicationUser, ApplicationDbContext>();
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
+                {
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuerSigningKey = true,
+                        ValidateIssuer = true,
+                        ValidateAudience = false,
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWT:Key"])),
+                        ValidIssuer = configuration["JWT:Issuer"]
+                    };
+                });
 
-            services.AddTransient<IIdentityService, IdentityService>();
+
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddTransient<IResponseCacheService, ResponseCacheService>();
             services.AddTransient<ICartService, CartService>();
-
-            services.AddAuthentication()
-                .AddIdentityServerJwt();
-
-            services.AddAuthorization();
+            services.AddTransient<ITokenService, TokenService>();
+            services.AddTransient<IUserService, UserService>();
 
             return services;
         }

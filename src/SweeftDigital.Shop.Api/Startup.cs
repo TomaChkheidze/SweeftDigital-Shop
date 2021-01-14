@@ -1,6 +1,7 @@
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -10,6 +11,7 @@ using SweeftDigital.Shop.Api.Services;
 using SweeftDigital.Shop.Application;
 using SweeftDigital.Shop.Application.Interfaces;
 using SweeftDigital.Shop.Infrastructure;
+using SweeftDigital.Shop.Infrastructure.Identity;
 
 namespace SweeftDigital.Shop.Api
 {
