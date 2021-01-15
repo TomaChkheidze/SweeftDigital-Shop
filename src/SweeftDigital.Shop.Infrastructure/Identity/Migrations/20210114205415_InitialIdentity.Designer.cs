@@ -10,7 +10,7 @@ using SweeftDigital.Shop.Infrastructure.Identity;
 namespace SweeftDigital.Shop.Infrastructure.Identity.Migrations
 {
     [DbContext(typeof(UserDbContext))]
-    [Migration("20210114152238_InitialIdentity")]
+    [Migration("20210114205415_InitialIdentity")]
     partial class InitialIdentity
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

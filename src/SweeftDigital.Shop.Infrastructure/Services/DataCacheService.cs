@@ -1,5 +1,7 @@
 ﻿using Microsoft.Extensions.Caching.Distributed;
+using Newtonsoft.Json;
 using SweeftDigital.Shop.Application.Interfaces;
+using SweeftDigital.Shop.Application.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,31 +12,31 @@ using System.Threading.Tasks;
 
 namespace SweeftDigital.Shop.Infrastructure.Services
 {
-    public class ResponseCacheService : IResponseCacheService
+    public class DataCacheService : IDataCacheService
     {
         private readonly IDistributedCache _cache;
-        public ResponseCacheService(IDistributedCache cache)
+        public DataCacheService(IDistributedCache cache)
         {
             _cache = cache;
         }
-        public async Task CacheResponseAsync(string cacheKey, object response, TimeSpan ttl, CancellationToken cancelationToken)
+        public async Task CacheDataAsync(string cacheKey, object response, TimeSpan ttl, CancellationToken cancelationToken)
         {
             if (response is null)
             {
                 return;
             }
 
-            var serialisedResponse = JsonSerializer.Serialize(response);
+            var serialisedResponse = JsonConvert.SerializeObject(response);
 
             await _cache.SetStringAsync(cacheKey, serialisedResponse, new DistributedCacheEntryOptions { AbsoluteExpirationRelativeToNow = ttl });
         }
 
-        public Task DeleteCachedResponseAsync(string cacheKey)
+        public async Task DeleteCachedDataAsync(string cacheKey, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            await _cache.RemoveAsync(cacheKey, cancellationToken);
         }
 
-        public async Task<T> GetCachedResponseAsync<T>(string cacheKey, CancellationToken cancelationToken)
+        public async Task<T> GetCachedDataAsync<T>(string cacheKey, CancellationToken cancelationToken)
         {
             var response = await _cache.GetStringAsync(cacheKey, cancelationToken);
 
@@ -43,7 +45,7 @@ namespace SweeftDigital.Shop.Infrastructure.Services
                 return default(T);
             }
 
-            return JsonSerializer.Deserialize<T>(response);
+            return JsonConvert.DeserializeObject<T>(response);
         }
     }
 }

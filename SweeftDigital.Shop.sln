@@ -9,9 +9,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SweeftDigital.Shop.Core", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SweeftDigital.Shop.Infrastructure", "src\SweeftDigital.Shop.Infrastructure\SweeftDigital.Shop.Infrastructure.csproj", "{EE9BB09B-C5DD-4DB3-B021-87FC75A8A6D1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SweeftDigital.Shop.Api", "src\SweeftDigital.Shop.Api\SweeftDigital.Shop.Api.csproj", "{2A2F6FF3-E2B1-451A-ADEA-0B33B2DE6F59}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SweeftDigital.Shop.Api", "src\SweeftDigital.Shop.Api\SweeftDigital.Shop.Api.csproj", "{2A2F6FF3-E2B1-451A-ADEA-0B33B2DE6F59}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SweeftDigital.Shop.Application", "src\SweeftDigital.Shop.Application\SweeftDigital.Shop.Application.csproj", "{7C178CD9-E053-4DE3-94B2-A0A02962F04F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SweeftDigital.Shop.Application", "src\SweeftDigital.Shop.Application\SweeftDigital.Shop.Application.csproj", "{7C178CD9-E053-4DE3-94B2-A0A02962F04F}"
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{D3CE28ED-E755-4E58-8B5C-C693B75DA9F7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -71,6 +73,18 @@ Global
 		{7C178CD9-E053-4DE3-94B2-A0A02962F04F}.Release|x64.Build.0 = Release|Any CPU
 		{7C178CD9-E053-4DE3-94B2-A0A02962F04F}.Release|x86.ActiveCfg = Release|Any CPU
 		{7C178CD9-E053-4DE3-94B2-A0A02962F04F}.Release|x86.Build.0 = Release|Any CPU
+		{D3CE28ED-E755-4E58-8B5C-C693B75DA9F7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D3CE28ED-E755-4E58-8B5C-C693B75DA9F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D3CE28ED-E755-4E58-8B5C-C693B75DA9F7}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{D3CE28ED-E755-4E58-8B5C-C693B75DA9F7}.Debug|x64.Build.0 = Debug|Any CPU
+		{D3CE28ED-E755-4E58-8B5C-C693B75DA9F7}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{D3CE28ED-E755-4E58-8B5C-C693B75DA9F7}.Debug|x86.Build.0 = Debug|Any CPU
+		{D3CE28ED-E755-4E58-8B5C-C693B75DA9F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D3CE28ED-E755-4E58-8B5C-C693B75DA9F7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D3CE28ED-E755-4E58-8B5C-C693B75DA9F7}.Release|x64.ActiveCfg = Release|Any CPU
+		{D3CE28ED-E755-4E58-8B5C-C693B75DA9F7}.Release|x64.Build.0 = Release|Any CPU
+		{D3CE28ED-E755-4E58-8B5C-C693B75DA9F7}.Release|x86.ActiveCfg = Release|Any CPU
+		{D3CE28ED-E755-4E58-8B5C-C693B75DA9F7}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

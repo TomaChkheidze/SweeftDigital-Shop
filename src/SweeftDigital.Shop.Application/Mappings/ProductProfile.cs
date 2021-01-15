@@ -1,12 +1,8 @@
 ﻿using AutoMapper;
 using SweeftDigital.Shop.Application.Handlers.Products.Commands;
+using SweeftDigital.Shop.Application.Models;
 using SweeftDigital.Shop.Application.ViewModels;
 using SweeftDigital.Shop.Core.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SweeftDigital.Shop.Application.Mappings
 {
@@ -16,11 +12,13 @@ namespace SweeftDigital.Shop.Application.Mappings
         {
             CreateMap<CreateProductCommand, Product>();
             CreateMap<UpdateProductCommand, Product>();
-
-            CreateMap<Product, ProductVm>()
+            CreateMap<Product, CartItem>();
+            CreateMap<Product, ProductVm>();
+            CreateMap<ProductVm, CartItem>()
                 .ForMember(dest =>
-                    dest.Price,
-                    opt => opt.MapFrom(src => src.Price.ToString()));
+                    dest.Quantity,
+                    opt => opt.UseDestinationValue());
+            CreateMap<PaginatedList<Product>, PaginatedList<ProductVm>>();
         }
     }
 }

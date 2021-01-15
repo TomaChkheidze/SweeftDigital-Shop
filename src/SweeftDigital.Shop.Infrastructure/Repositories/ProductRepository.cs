@@ -18,32 +18,32 @@ namespace SweeftDigital.Shop.Infrastructure.Repositories
             _context = context;
         }
 
-        public Task Create(Product item)
+        public Task CreateAsync(Product item)
         {
             throw new NotImplementedException();
         }
 
-        public Task Delete(int id)
+        public Task DeleteAsync(int id)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<Product> Get(int id, CancellationToken? cancellationToken)
+        public async Task<Product> GetAsync(int id, CancellationToken? cancellationToken)
         {
             return await _context.Products.FindAsync(id);
         }
 
-        public Task<IEnumerable<Product>> GetAll(CancellationToken? cancellationToken)
+        public Task<IEnumerable<Product>> GetAllAsync(CancellationToken? cancellationToken)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<PaginatedList<Product>> GetPaginated(int pageIndex, int pageSize, CancellationToken cancelationToken)
+        public async Task<PaginatedList<Product>> GetPaginatedAsync(int pageIndex, int pageSize, CancellationToken cancelationToken)
         {
             return await PaginatedList<Product>.CreateAsync(_context.Products.AsQueryable(), pageIndex, pageSize, cancelationToken);
         }
 
-        public Task Update(Product item)
+        public Task UpdateAsync(Product item)
         {
             throw new NotImplementedException();
         }

@@ -6,6 +6,7 @@ using SweeftDigital.Shop.Application.Models;
 using SweeftDigital.Shop.Application.ViewModels;
 using SweeftDigital.Shop.Core.Entities;
 using System.Collections.Generic;
+using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -29,9 +30,9 @@ namespace SweeftDigital.Shop.Application.Handlers.Products.Queries
         }
         public async Task<PaginatedList<ProductVm>> Handle(GetProductsQuery request, CancellationToken cancellationToken)
         {
-            var result = await _productRepository.GetPaginated(request.PageIndex, request.PageSize, cancellationToken);
+            var result = await _productRepository.GetPaginatedAsync(request.PageIndex, request.PageSize, cancellationToken);
 
-            return new PaginatedList<ProductVm>(_mapper.Map<IEnumerable<ProductVm>>(result.Items), result.TotalCount, result.PageIndex, result.PageSize);
+            return new PaginatedList<ProductVm>(_mapper.Map<List<ProductVm>>(result.Items), result.TotalCount, result.PageIndex, result.PageSize);
         }
     }
 }

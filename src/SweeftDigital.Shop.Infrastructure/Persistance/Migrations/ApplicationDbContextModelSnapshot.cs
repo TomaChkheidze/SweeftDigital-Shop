@@ -3,17 +3,15 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SweeftDigital.Shop.Infrastructure.Persistence;
 
-namespace SweeftDigital.Shop.Infrastructure.Persistence.Migrations
+namespace SweeftDigital.Shop.Infrastructure.Persistance.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210114152222_ApplicationInitial")]
-    partial class ApplicationInitial
+    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -49,36 +47,13 @@ namespace SweeftDigital.Shop.Infrastructure.Persistence.Migrations
                     b.Property<string>("PictureUrl")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<decimal>("Price")
+                        .HasPrecision(14, 2)
+                        .HasColumnType("decimal(14,2)");
+
                     b.HasKey("Id");
 
                     b.ToTable("Products");
-                });
-
-            modelBuilder.Entity("SweeftDigital.Shop.Core.Entities.Product", b =>
-                {
-                    b.OwnsOne("SweeftDigital.Shop.Core.ValueObjects.Money", "Price", b1 =>
-                        {
-                            b1.Property<int>("ProductId")
-                                .ValueGeneratedOnAdd()
-                                .HasColumnType("int")
-                                .UseIdentityColumn();
-
-                            b1.Property<string>("Currency")
-                                .HasColumnType("nvarchar(max)");
-
-                            b1.Property<decimal>("Quantity")
-                                .HasPrecision(14, 2)
-                                .HasColumnType("decimal(14,2)");
-
-                            b1.HasKey("ProductId");
-
-                            b1.ToTable("Products");
-
-                            b1.WithOwner()
-                                .HasForeignKey("ProductId");
-                        });
-
-                    b.Navigation("Price");
                 });
 #pragma warning restore 612, 618
         }

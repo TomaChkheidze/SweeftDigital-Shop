@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using AutoMapper;
+using MediatR;
 using Microsoft.Extensions.Logging;
 using SweeftDigital.Shop.Application.Attributes;
 using SweeftDigital.Shop.Application.Interfaces;
@@ -14,12 +15,14 @@ namespace SweeftDigital.Shop.Application.Behaviours
     public class CashingBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
     {
         private readonly ILogger<TRequest> _logger;
-        private readonly IResponseCacheService _cache;
+        private readonly IMapper _mapper;
+        private readonly IDataCacheService _cache;
 
-        public CashingBehaviour(ILogger<TRequest> logger, IResponseCacheService cache)
+        public CashingBehaviour(ILogger<TRequest> logger, IDataCacheService cache, IMapper mapper)
         {
             _logger = logger;
             _cache = cache;
+            _mapper = mapper;
         }
 
         public async Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<TResponse> next)
@@ -32,18 +35,18 @@ namespace SweeftDigital.Shop.Application.Behaviours
 
                 if (!string.IsNullOrEmpty(cacheKey))
                 {
-                    var cachedResponse = await _cache.GetCachedResponseAsync<TResponse>(cacheKey, cancellationToken);
+                    var cachedResponse = await _cache.GetCachedDataAsync<TResponse>(cacheKey, cancellationToken);
 
                     if (cachedResponse != null)
                     {
                         _logger.LogInformation($"Cached Response Retrieved: {typeof(TRequest).Name} | CacheKey: {cacheKey}");
-                        return cachedResponse;
+                        return _mapper.Map<TResponse>(cachedResponse);
                     }
                     else
                     {
                         var value = await next();
 
-                        await _cache.CacheResponseAsync(cacheKey, value, cachedAttributes.First().Duration, cancellationToken);
+                        await _cache.CacheDataAsync(cacheKey, value, cachedAttributes.First().Duration, cancellationToken);
 
                         _logger.LogInformation($"Successfully Cashed Response: {typeof(TRequest).Name} | CacheKey: {cacheKey}");
 

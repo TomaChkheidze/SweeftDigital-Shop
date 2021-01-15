@@ -1,9 +1,6 @@
 ﻿using MediatR;
+using SweeftDigital.Shop.Application.Exceptions;
 using SweeftDigital.Shop.Application.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -27,7 +24,7 @@ namespace SweeftDigital.Shop.Application.Handlers.Account.Commands
         }
         public async Task<Unit> Handle(RegisterCommand request, CancellationToken cancellationToken)
         {
-            await _userService.RegisterUserAsync(request);
+            if (!await _userService.RegisterUserAsync(request)) { throw new RegistrationException("could not register user"); }
 
             return Unit.Value;
         }

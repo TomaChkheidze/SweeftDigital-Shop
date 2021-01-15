@@ -9,6 +9,7 @@ namespace SweeftDigital.Shop.Application.Handlers.Carts.Queries
     public class GetCartQuery : IRequest<Cart>
     {
         public string Id { get; set; }
+        public string Secret { get; set; }
     }
 
     public class GetCartQueryHandler : IRequestHandler<GetCartQuery, Cart>
@@ -22,7 +23,12 @@ namespace SweeftDigital.Shop.Application.Handlers.Carts.Queries
 
         public async Task<Cart> Handle(GetCartQuery request, CancellationToken cancellationToken)
         {
-            return await _cartService.GetCartAsync(request.Id);
+            if(string.IsNullOrEmpty(request.Id) || string.IsNullOrEmpty(request.Secret))
+            {
+                return new Cart();
+            }
+            var cart = new Cart(request.Id, request.Secret);
+            return await _cartService.GetCartAsync(cart, cancellationToken);
         }
     }
 }

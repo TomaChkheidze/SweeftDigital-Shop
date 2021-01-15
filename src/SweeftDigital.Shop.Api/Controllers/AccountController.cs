@@ -20,7 +20,7 @@ namespace SweeftDigital.Shop.Api.Controllers
         {
             await Mediator.Send(command);
 
-            return NoContent();
+            return Ok();
         }
     }
 }

@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using StackExchange.Redis;
+using SweeftDigital.Shop.Api.Helpers;
 using SweeftDigital.Shop.Api.Services;
 using SweeftDigital.Shop.Application;
 using SweeftDigital.Shop.Application.Interfaces;
@@ -42,7 +43,7 @@ namespace SweeftDigital.Shop.Api
 
             services.AddDistributedRedisCache(c =>
             {
-                c.ConfigurationOptions = ConfigurationOptions.Parse("localhost", true);
+                c.ConfigurationOptions = ConfigurationOptions.Parse(Configuration.GetConnectionString("RedisConnection"), true);
             });
         }
 
@@ -66,6 +67,8 @@ namespace SweeftDigital.Shop.Api
             {
                 endpoints.MapControllers();
             });
+
+            PrepareDb.PrepareSeed(app);
         }
     }
 }

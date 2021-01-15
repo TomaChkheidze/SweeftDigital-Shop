@@ -1,0 +1,36 @@
+version: '3.4'
+
+services:
+  sweeftdigital.shop.api:
+    image: ${DOCKER_REGISTRY-}sweeftdigitalshopapi
+    container_name: api
+    build:
+      context: .
+      dockerfile: src/SweeftDigital.Shop.Api/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Server=db;Database=ShopDb;User=sa;Password=PaSs1234567;MultipleActiveResultSets=true
+      - ConnectionStrings__IdentityConnection=Server=db;Database=IdentityDb;User=sa;Password=PaSs1234567;MultipleActiveResultSets=true
+      - ConnectionStrings__RedisConnection=redis
+    ports: 
+      - 5000:80
+    depends_on:
+      - db
+      - redis
+    restart: on-failure
+  db:
+    image: mcr.microsoft.com/mssql/server
+    container_name: database
+    environment:
+      - SA_PASSWORD=PaSs1234567
+      - ACCEPT_EULA=Y
+      - MSSQL_PID=Express
+    ports:
+      - 1433:1433
+    restart: on-failure
+  redis:
+    image: redis:latest
+    container_name: redis
+    ports:
+      - 8479:6379
+    restart: on-failure

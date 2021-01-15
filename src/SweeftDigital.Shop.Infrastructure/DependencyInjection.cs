@@ -10,6 +10,7 @@ using SweeftDigital.Shop.Infrastructure.Identity;
 using SweeftDigital.Shop.Infrastructure.Persistence;
 using SweeftDigital.Shop.Infrastructure.Repositories;
 using SweeftDigital.Shop.Infrastructure.Services;
+using System;
 using System.Text;
 
 namespace SweeftDigital.Shop.Infrastructure
@@ -18,18 +19,27 @@ namespace SweeftDigital.Shop.Infrastructure
     {
         public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
+
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
-                    configuration.GetConnectionString("DefaultConnection"),
-                    b => b.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
+                    configuration.GetConnectionString("DefaultConnection"), b =>
+                    {
+                        b.EnableRetryOnFailure();
+
+                        b.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName);
+                    }));
 
             services.AddDbContext<UserDbContext>(options =>
                 options.UseSqlServer(
-                    configuration.GetConnectionString("IdentityConnection"),
-                    b => b.MigrationsAssembly(typeof(UserDbContext).Assembly.FullName)));
+                    configuration.GetConnectionString("IdentityConnection"), b =>
+                    {
+                        b.EnableRetryOnFailure();
+
+                        b.MigrationsAssembly(typeof(UserDbContext).Assembly.FullName);
+                    }));
 
             services
-                .AddDefaultIdentity<ApplicationUser>(options=>
+                .AddDefaultIdentity<ApplicationUser>(options =>
                 {
                     options.Password.RequireDigit = false;
                     options.Password.RequiredLength = 4;
@@ -55,7 +65,7 @@ namespace SweeftDigital.Shop.Infrastructure
 
 
             services.AddScoped<IProductRepository, ProductRepository>();
-            services.AddTransient<IResponseCacheService, ResponseCacheService>();
+            services.AddTransient<IDataCacheService, DataCacheService>();
             services.AddTransient<ICartService, CartService>();
             services.AddTransient<ITokenService, TokenService>();
             services.AddTransient<IUserService, UserService>();

@@ -29,7 +29,7 @@ namespace SweeftDigital.Shop.Application.Handlers.Products.Queries
 
         public async Task<ProductVm> Handle(GetProductQuery request, CancellationToken cancellationToken)
         {
-            return _mapper.Map<ProductVm>(await _productRepository.Get(request.Id, cancellationToken));
+            return _mapper.Map<ProductVm>(await _productRepository.GetAsync(request.Id, cancellationToken));
         }
     }
 }

@@ -4,6 +4,7 @@ using SweeftDigital.Shop.Application.Exceptions;
 using SweeftDigital.Shop.Application.Handlers.Account.Commands;
 using SweeftDigital.Shop.Application.Interfaces;
 using SweeftDigital.Shop.Application.Models;
+using SweeftDigital.Shop.Infrastructure.Exceptions;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -37,14 +38,14 @@ namespace SweeftDigital.Shop.Infrastructure.Identity
 
             if(user == null)
             {
-                throw new ForbiddenException("username is incorrect");
+                throw new AuthException("username is incorrect");
             }
 
             var result = await _signInManager.CheckPasswordSignInAsync(user, password, false);
 
             if (!result.Succeeded)
             {
-                throw new ForbiddenException("password is incorrect");
+                throw new AuthException("password is incorrect");
             }
 
             return user;
@@ -67,8 +68,6 @@ namespace SweeftDigital.Shop.Infrastructure.Identity
             };
 
             var result = await _userManager.CreateAsync(newUser, command.Password);
-
-            if (!result.Succeeded) { throw new RegistrationException("could not register user"); }
 
             return result.Succeeded;
         }

@@ -5,23 +5,23 @@ using System.Threading.Tasks;
 
 namespace SweeftDigital.Shop.Infrastructure.Identity
 {
-    public static class IdentityDbContextSeed
+    public static class UserDbContextSeed
     {
-        public static async Task SeedUser(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
+        public static void SeedUser(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             var adminRole = new IdentityRole("Administrator");
 
             if (!roleManager.Roles.Any())
             {
-                await roleManager.CreateAsync(adminRole);
+                roleManager.CreateAsync(adminRole).GetAwaiter().GetResult();
             }
 
             var adminUser = new ApplicationUser { UserName = "admin", Email = "tomachkheidze@gmail.com", FirstName = "Toma", LastName = "Chkheidze" };
 
             if (!userManager.Users.Any())
             {
-                await userManager.CreateAsync(adminUser, "admin");
-                await userManager.AddToRolesAsync(adminUser, new[] { adminRole.Name });
+                userManager.CreateAsync(adminUser, "admin").GetAwaiter().GetResult();
+                userManager.AddToRolesAsync(adminUser, new[] { adminRole.Name }).GetAwaiter().GetResult();
             }
         }
     }
